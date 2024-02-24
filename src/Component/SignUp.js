@@ -1,9 +1,9 @@
 import React, { useState } from "react";
 import "./product.css";
-import {Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const Signup = () => {
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
@@ -71,7 +71,7 @@ const Signup = () => {
           setPassword("");
           setConfirmPassword("");
           setValidationMessage("User registered successfully!");
-          navigate("/login");
+          // navigate("/login");
         } else {
           setValidationMessage("Registration failed. Please try again.");
         }
@@ -129,21 +129,34 @@ const Signup = () => {
         <button
           type="submit"
           style={{
-            width: "200px",
+            width: "140px",
             padding: "8px",
             borderRadius: "5px",
             backgroundColor: "white",
             fontSize: "16px",
+            marginRight: "4px",
           }}
         >
           Sign Up
+        </button>
+        <button
+          id="login"
+          style={{
+            width: "140px",
+            padding: "8px",
+            borderRadius: "5px",
+            backgroundColor: "white",
+            fontSize: "16px",
+            textDecoration: "none",
+          }}
+        >
+          <Link to={"/Login"}>Log In</Link>
         </button>
         <br />
         {validationMessage && (
           <p style={{ color: "red" }}>{validationMessage}</p>
         )}
       </form>
-      <button id="login"><Link to={"/Login"}>Log-In</Link></button>
     </div>
   );
 };

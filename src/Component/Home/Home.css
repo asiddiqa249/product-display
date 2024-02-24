@@ -1,0 +1,13 @@
+.main{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+}
+.product{
+    display: flex;
+    flex-direction: column;
+    width: 300px;
+    border: 1px solid black;
+    text-align: center;
+    margin-bottom: 10px;
+}

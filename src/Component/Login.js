@@ -1,9 +1,17 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
+import { Details } from "./NavigationStack/Navigation";
+import { useNavigate } from "react-router-dom";
 
 const Login = () => {
+  const routeHome = useNavigate();
+  const logDetails = useContext(Details);
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [validationMessage, setValidationMessage] = useState("");
+
+  const home = () => {
+    routeHome("/home");
+  };
 
   const handleLogin = (event) => {
     event.preventDefault();
@@ -24,12 +32,14 @@ const Login = () => {
       .then((res) => res.json())
       .then((response) => {
         console.log(response);
-
-        if (response.success) {
-          alert("Login successful!");
-        } else {
-          setValidationMessage("Invalid username or password.");
-        }
+        alert("Login successful!");
+        localStorage.setItem(
+          "userDetails",
+          JSON.stringify({ username, password })
+        );
+        logDetails.AfterRoute();
+        home();
+        logDetails.userDetails({ username, password });
       })
       .catch((error) => {
         console.error(error);
@@ -68,18 +78,20 @@ const Login = () => {
         />
         <br />
         <br />
-        <button
-          type="submit"
-          style={{
-            width: "200px",
-            padding: "8px",
-            borderRadius: "5px",
-            backgroundColor: "white",
-            fontSize: "16px",
-          }}
-        >
-          Login
-        </button>
+        <center>
+          <button
+            type="submit"
+            style={{
+              width: "200px",
+              padding: "8px",
+              borderRadius: "5px",
+              backgroundColor: "white",
+              fontSize: "16px",
+            }}
+          >
+            Login
+          </button>
+        </center>
         <br />
         {validationMessage && (
           <p style={{ color: "red" }}>{validationMessage}</p>
