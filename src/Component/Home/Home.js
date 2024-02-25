@@ -70,7 +70,7 @@ const HomePage = ({ handleLogout }) => {
         <div className="search">
           <input
             type="text"
-            placeholder="Search..."
+            placeholder="Search...."
             value={searchTerm}
             onChange={handleSearch}
           />

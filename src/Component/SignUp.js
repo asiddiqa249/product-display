@@ -9,77 +9,51 @@ const Signup = () => {
   const [confirmPassword, setConfirmPassword] = useState("");
   const [validationMessage, setValidationMessage] = useState("");
 
-  const passwordRegex =
-    /[A-Z]/.test(password) && /[a-z]/.test(password) && /\d/.test(password);
-
-  const handleSignup = (event) => {
+  const handleSignup = async (event) => {
     event.preventDefault();
 
-    const existingUsers = JSON.parse(localStorage.getItem("users")) || [];
+    try {
+      const response = await fetch("https://dummyjson.com/users");
+      const data = await response.json();
 
-    let isUsernameExists = false;
-    for (const user of existingUsers) {
-      if (user.username === username) {
-        isUsernameExists = true;
-        break;
+      const usersFromApi = data.users || [];
+      const isUsernameExistsInApi = usersFromApi.some(
+        (user) => user.username === username
+      );
+
+      if (!isUsernameExistsInApi) {
+        setValidationMessage(
+          "Username not found in the API. Please sign up with a valid username."
+        );
+        return;
       }
-    }
 
-    if (isUsernameExists) {
-      setValidationMessage(
-        "Username already exists. Choose a different username."
-      );
-      return;
-    }
+      if (password !== confirmPassword) {
+        setValidationMessage(
+          "Passwords do not match. Please enter the same password in both fields."
+        );
+        return;
+      }
 
-    if (!passwordRegex) {
-      setValidationMessage(
-        "Invalid password. Password must be at least 8 characters long and include at least one letter and one number."
-      );
-      return;
-    }
-
-    if (password !== confirmPassword) {
-      setValidationMessage(
-        "Passwords do not match. Please enter the same password in both fields."
-      );
-      return;
-    }
-
-    fetch("https://dummyjson.com/users/add", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
+      const user = {
         username: username,
         password: password,
-      }),
-    })
-      .then((res) => {
-        res.json();
-      })
-      .then((response) => {
-        console.log(response);
+      };
 
-        if (response.success) {
-          const user = {
-            username: username,
-            password: password,
-          };
-          const updatedUsers = [...existingUsers, user];
-          localStorage.setItem("users", JSON.stringify(updatedUsers));
-          setUsername("");
-          setPassword("");
-          setConfirmPassword("");
-          setValidationMessage("User registered successfully!");
-          navigate("/login");
-        } else {
-          setValidationMessage("Registration failed. Please try again.");
-        }
-      })
-      .catch((error) => {
-        console.error(error);
-        setValidationMessage("Registration failed. Please try again.");
-      });
+      const existingUsers = JSON.parse(localStorage.getItem("users")) || [];
+      const updatedUsers = [...existingUsers, user];
+      localStorage.setItem("users", JSON.stringify(updatedUsers));
+
+      setUsername("");
+      setPassword("");
+      setConfirmPassword("");
+      setValidationMessage("User registered successfully!");
+      alert("User registered successfully!");
+      navigate("/login");
+    } catch (error) {
+      console.error(error);
+      setValidationMessage("Registration failed. Please try again.");
+    }
   };
 
   return (
