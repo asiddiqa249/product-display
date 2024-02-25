@@ -1,17 +1,12 @@
-import React, { useContext, useState } from "react";
-import { Details } from "./NavigationStack/Navigation";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import "./product.css";
 
 const Login = () => {
-  const routeHome = useNavigate();
-  const logDetails = useContext(Details);
+  const navigate = useNavigate();
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [validationMessage, setValidationMessage] = useState("");
-
-  const home = () => {
-    routeHome("/home");
-  };
 
   const handleLogin = (event) => {
     event.preventDefault();
@@ -29,21 +24,24 @@ const Login = () => {
         password: password,
       }),
     })
-      .then((res) => res.json())
+      .then((res) => {
+        if (res.status === 200) {
+          return res.json();
+        } else {
+          throw new Error("Invalid API credentials.");
+        }
+      })
       .then((response) => {
-        console.log(response);
         alert("Login successful!");
-        localStorage.setItem(
-          "userDetails",
-          JSON.stringify({ username, password })
-        );
-        logDetails.AfterRoute();
-        home();
-        logDetails.userDetails({ username, password });
+        sessionStorage.setItem("user", true);
+        navigate("/");
+        window.location.reload();
       })
       .catch((error) => {
         console.error(error);
-        setValidationMessage("Error during login. Please try again later.");
+        setValidationMessage(
+          error.message || "Error during login. Please try again later."
+        );
       });
   };
 
@@ -82,7 +80,7 @@ const Login = () => {
           <button
             type="submit"
             style={{
-              width: "200px",
+              width: "70%",
               padding: "8px",
               borderRadius: "5px",
               backgroundColor: "white",

@@ -1,8 +1,10 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
+import "./product.css";
 
 export default function Product() {
+  const navigate = useNavigate();
   const id = useParams();
   console.log(id);
   const [data, setData] = useState({});
@@ -17,24 +19,28 @@ export default function Product() {
   };
   console.log(data);
   console.log();
+  const handleCLick = () => {
+    navigate("/");
+  };
   return (
     <>
-      <div className="SM">
-        <div className="child1">
-          <img
-            src={data.image}
-            width={200}
-            height={200}
-            className="IMG"
-            alt=".."
-          />
-        </div>
-        <div className="child2">
-          <h4>{data.title}</h4>
-          <p>{data.description}</p>
-          <h6>🏷️RS ₹{data.price}</h6>
-          <h6>⭐ {data.rating}</h6>
-          <h5>{ data.brand}</h5>
+      <div className="parent">
+        <div className="subParent">
+          <div className="child1">
+            <img src={data.thumbnail} className="IMG" alt=".." />
+          </div>
+          <div className="child2">
+            <h3>{data.title}</h3>
+            <p>{data.description}</p>
+            <h4>🏷️RS ₹{data.price}</h4>
+            <h4>⭐ {data.rating}</h4>
+            <h4>{data.brand}</h4>
+          </div>
+          <center>
+            <button className="btn" onClick={handleCLick}>
+              Back
+            </button>
+          </center>
         </div>
       </div>
     </>

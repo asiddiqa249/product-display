@@ -6,7 +6,7 @@
 }
 .form-page{
     background-image:linear-gradient(to right, rgb(102, 196, 232), rgb(250, 250, 250));
-    height: 100vh;
+    min-height: 100vh;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -18,8 +18,20 @@
     border-radius: 5%;
     padding: 5%;
     background-image: linear-gradient(to bottom, pink, rgb(248, 144, 231));
+    width: 80%;
+    max-width: 500px;
 }
 .inp{
     padding: 5px;
-    width: 250px;
+    width: 100%;
+    box-sizing: border-box;
+}
+@media (max-width: 600px) {
+    .form {
+        width: 90%;
+    }
+}
+.loginLink{
+    text-decoration: none;
+    color: black;
 }
