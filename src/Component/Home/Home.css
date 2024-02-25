@@ -37,21 +37,29 @@
     font-size: 16px;
 }
 .logOut{
-    width: 200px;
+    width: 100%;
     padding: 5px;
     font-size: 16px;
     color: white;
-    background-color: black;
+    background-color: black; 
 }
 .top{
     display: flex;
     justify-content: space-between;
     background-color: bisque;
 }
-.search input{
+.search input {
     width: 100%;
     font-size: 16px;
     padding: 5px;
+    box-sizing: border-box;
+}
+
+@media (min-width: 600px) {
+    .search input {
+        max-width: 200px;
+        height: 100%;
+    }
 }
 .pagination{
     text-align: center;
@@ -66,4 +74,14 @@
 .link{
     text-decoration: none;
     color: black;
+}
+.nameSort{
+    width: 100%;
+    font-size: 16px;
+    padding: 5px;
+}
+.priceSort{
+    width: 100%;
+    font-size: 16px;
+    padding: 5px;
 }

@@ -9,7 +9,9 @@ const HomePage = ({ handleLogout }) => {
   const [searchTerm, setSearchTerm] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(6);
+  const [sortOrder, setSortOrder] = useState("asc"); // Initial sort order
   const navigate = useNavigate();
+
   useEffect(() => {
     axios.get("https://dummyjson.com/products").then((res) => {
       setData(res.data.products);
@@ -28,6 +30,22 @@ const HomePage = ({ handleLogout }) => {
     setFilteredData(filtered);
   };
 
+  const handleSort = (key) => {
+    const sortedData = [...filteredData].sort((a, b) => {
+      if (key === "title") {
+        return sortOrder === "asc"
+          ? a[key].localeCompare(b[key])
+          : b[key].localeCompare(a[key]);
+      } else if (key === "price") {
+        return sortOrder === "asc" ? a[key] - b[key] : b[key] - a[key];
+      }
+      return 0;
+    });
+
+    setFilteredData(sortedData);
+    setSortOrder(sortOrder === "asc" ? "desc" : "asc");
+  };
+
   const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
   return (
@@ -42,6 +60,12 @@ const HomePage = ({ handleLogout }) => {
           className="logOut"
         >
           Logout
+        </button>
+        <button onClick={() => handleSort("title")} className="nameSort">
+          Sort by Name
+        </button>
+        <button onClick={() => handleSort("price")} className="priceSort">
+          Sort by Price
         </button>
         <div className="search">
           <input
